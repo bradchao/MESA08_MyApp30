@@ -72,6 +72,61 @@ class ViewController: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDe
         print("錄音結束:\(flag)")
     }
     
+    @IBAction func play(_ sender: Any) {
+        let file = NSHomeDirectory() + "/Documents/audio.ima4"
+        let url = URL(fileURLWithPath: file)
+
+        let session = AVAudioSession.sharedInstance()
+        do{
+            try session.setCategory(AVAudioSessionCategoryPlayback)
+            try session.setActive(true)
+            
+            if let player = try? AVAudioPlayer(contentsOf: url) {
+                //player.delegate = self
+                player.play()
+            }else{
+                print("e1")
+            }
+            
+        }catch {
+            print("error: \(error)")
+        }
+        
+        if let player = try? AVAudioPlayer(contentsOf: url) {
+            //player.delegate = self
+            player.play()
+            
+//            if player.prepareToPlay() {
+//
+//
+//
+//                if player.play() {
+//                    print("start play...")
+//                }else{
+//                    print("play error")
+//                }
+//            }else{
+//                print("play prepare failure")
+//            }
+        }else{
+            print("file error")
+        }
+        
+        
+    }
+    
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        print("播放結束:\(flag)")
+    }
+    
+    func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
+        print("解碼失敗:\(error!)")
+    }
+    
+    func audioPlayerBeginInterruption(_ player: AVAudioPlayer) {
+        print("插斷")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
